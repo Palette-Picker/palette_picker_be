@@ -39,24 +39,43 @@ describe('Server', () => {
       expect(palettes[2].name).toEqual(expectedPalettes[2].name);
       expect(palettes[3].name).toEqual(expectedPalettes[3].name);
     });
+  });
 
-    describe('GET /api/v1/projects/:id', () => {
-      it('should return a 200 and a specified project by id', async () => {
-        const expectedProject = await database('projects').first();
-        const { id } = expectedProject;
-        const res = await request(app).get(`/api/v1/projects/${id}`);
-        const project = res.body[0];
-        expect(res.status).toBe(200);
-        expect(project.name).toBe(expectedProject.name);
-      });
+  describe('GET /api/v1/projects/:id', () => {
+    it('should return a 200 and a specified project by id', async () => {
+      const expectedProject = await database('projects').first();
+      const { id } = expectedProject;
+      const res = await request(app).get(`/api/v1/projects/${id}`);
+      const project = res.body[0];
+      expect(res.status).toBe(200);
+      expect(project.name).toBe(expectedProject.name);
+    });
 
-      it('should return a 404 and "No project with that id exists"', async () => {
-        const invalidId = 50000;
-        const expectedMsg = "No project with that id exists";
-        const res = await request(app).get(`/api/v1/projects/${invalidId}`);
-        expect(res.status).toBe(404);
-        expect(res.body.error).toBe(expectedMsg);
-      })
+    it('should return a 404 and "No project with that id exists"', async () => {
+      const invalidId = -1;
+      const expectedMsg = "No project with that id exists";
+      const res = await request(app).get(`/api/v1/projects/${invalidId}`);
+      expect(res.status).toBe(404);
+      expect(res.body.error).toBe(expectedMsg);
+    });
+  });
+
+  describe('GET /api/v1/palettes/:id', () => {
+    it('should return 200 and a specific palette by id', async () => {
+      const expectedPalette = await database('palettes').first();
+      const { id } = expectedPalette;
+      const res = await request(app).get(`/api/v1/palettes/${id}`);
+      const palette = res.body[0];
+      expect(res.status).toBe(200);
+      expect(palette.name).toBe(expectedPalette.name);
+    });
+
+    it('should return 404 and "No palette with that id exists"', async () => {
+      const invalidId = -1;
+      const expectedMsg = "No palette with that id exists";
+      const res = await request(app).get(`/api/v1/palettes/${invalidId}`);
+      expect(res.status).toBe(404);
+      expect(res.body.error).toBe(expectedMsg);
     });
   });
 });
