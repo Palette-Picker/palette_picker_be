@@ -14,4 +14,48 @@ app.get('/', (req, res) => {
   res.send('Welcome to Palette Picker!');
 });
 
+app.get('/api/v1/projects', async (req, res) => {
+  try {
+    const projects = await database('projects').select();
+    res.status(200).json(projects);
+  } catch (error) {
+    res.status(404).json({ error: 'No projects found' });
+  };
+});
+
+app.get('/api/v1/palettes', async (req, res) => {
+  try {
+    const palettes = await database('palettes').select();
+    res.status(200).json(palettes);
+  } catch (error) {
+    res.status(404).json({ error: 'No palettes found' });
+  };
+});
+
+app.get('/api/v1/projects/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const project = await database('projects').where('id', id).select();
+    if (project.length) {
+      return res.status(200).json(project);
+    }
+    res.status(404).json({ error: 'No project with that id exists' });
+  } catch (error) {
+    res.status(500).json({ error });
+  };
+});
+
+app.get('/api/v1/palettes/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const palette = await database('palettes').where('id', id).select();
+    if (palette.length) {
+      return res.status(200).json(palette);
+    }
+    res.status(404).json({ error: 'No palette with that id exists' });
+  } catch (error) {
+    res.status(500).json({ error });
+  };
+});
+
 export default app;

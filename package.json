@@ -4,18 +4,25 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --watchAll",
     "start": "nodemon --exec babel-node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/polyfill": "^7.7.0",
+    "babel-core": "^6.26.3",
+    "babel-jest": "^24.9.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "jest": "^24.9.0",
     "knex": "^0.20.3",
     "nightmare": "^3.0.2",
-    "pg": "^7.14.0"
+    "nodemon": "^2.0.1",
+    "pg": "^7.14.0",
+    "regenerator-runtime": "^0.13.3",
+    "supertest": "^4.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.7.4",
