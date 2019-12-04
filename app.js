@@ -17,7 +17,16 @@ app.get('/', (req, res) => {
 app.get('/api/v1/projects', async (req, res) => {
   try {
     const projects = await database('projects').select();
-    res.status(200).json(projects);
+    const palettes = await database('palettes').select();
+    const projsWithPalettes = projects.reduce((acc, project) => {
+      const { id, name } = project;
+      const projPalette = palettes.filter(palette => palette.project_id === project.id)
+      console.log(projPalette);
+      acc.push({ id, name, palettes: projPalette });
+      return acc;
+    }, []);
+    console.log(projsWithPalettes);
+    res.status(200).json(projsWithPalettes);
   } catch (error) {
     res.status(404).json({ error: 'No projects found' });
   };
