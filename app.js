@@ -19,7 +19,16 @@ app.get('/api/v1/projects', async (req, res) => {
     const projects = await database('projects').select();
     res.status(200).json(projects);
   } catch (error) {
-    res.status(500).json({ error });
+    res.status(404).json({ error: 'No projects found' });
+  };
+});
+
+app.get('/api/v1/palettes', async (req, res) => {
+  try {
+    const palettes = await database('palettes').select();
+    res.status(200).json(palettes);
+  } catch (error) {
+    res.status(404).json({ error: 'No palettes found' });
   };
 });
 

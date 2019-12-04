@@ -28,14 +28,16 @@ describe('Server', () => {
     });
   });
 
-  describe('GET /api/v1/palettes', async (req, res) => {
-    const expectedPalettes = await database('palettes').select();
-    const res = await request(app).get('/api/v1/palettes');
-    const palettes = res.body;
-    expect(res.status).toBe(200);
-    expect(palettes[0].name).toEqual(expectedPalettes[0].name);
-    expect(palettes[1].name).toEqual(expectedPalettes[1].name);
-    expect(palettes[2].name).toEqual(expectedPalettes[2].name);
-    expect(palettes[3].name).toEqual(expectedPalettes[3].name);
-  })
+  describe('GET /api/v1/palettes', () => {
+    it('should return a 200 and all of the palettes', async () => {
+      const expectedPalettes = await database('palettes').select();
+      const res = await request(app).get('/api/v1/palettes');
+      const palettes = res.body;
+      expect(res.status).toBe(200);
+      expect(palettes[0].name).toEqual(expectedPalettes[0].name);
+      expect(palettes[1].name).toEqual(expectedPalettes[1].name);
+      expect(palettes[2].name).toEqual(expectedPalettes[2].name);
+      expect(palettes[3].name).toEqual(expectedPalettes[3].name);
+    });
+  });
 });
