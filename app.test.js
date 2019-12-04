@@ -23,7 +23,8 @@ describe('Server', () => {
       const res = await request(app).get('/api/v1/projects');
       const projects = res.body;
       expect(res.status).toBe(200);
-      expect(projects).toEqual(expectedProjects);
+      expect(projects[0].name).toEqual(expectedProjects[0].name);
+      expect(projects[1].name).toEqual(expectedProjects[1].name);
     })
   })
 });

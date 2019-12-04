@@ -14,4 +14,13 @@ app.get('/', (req, res) => {
   res.send('Welcome to Palette Picker!');
 });
 
+app.get('/api/v1/projects', async (req, res) => {
+  try {
+    const projects = await database('projects').select();
+    res.status(200).json(projects);
+  } catch (error) {
+    res.status(500).json({ error });
+  };
+});
+
 export default app;
