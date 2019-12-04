@@ -40,5 +40,8 @@ const seedProjectsData = [
         color5: '#a7fff6'
       }
     ]
-  },
-]
+  }
+];
+
+module.exports = seedProjectsData;
+
