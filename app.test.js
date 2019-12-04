@@ -49,6 +49,14 @@ describe('Server', () => {
         expect(res.status).toBe(200);
         expect(project.name).toBe(expectedProject.name);
       });
+
+      it('should return a 404 and "No project with that id exists"', async () => {
+        const invalidId = 50000;
+        const expectedMsg = "No project with that id exists";
+        const res = await request(app).get(`/api/v1/projects/${invalidId}`);
+        expect(res.status).toBe(404);
+        expect(res.body.error).toBe(expectedMsg);
+      })
     });
   });
 });
