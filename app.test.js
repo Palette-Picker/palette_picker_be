@@ -39,5 +39,16 @@ describe('Server', () => {
       expect(palettes[2].name).toEqual(expectedPalettes[2].name);
       expect(palettes[3].name).toEqual(expectedPalettes[3].name);
     });
+
+    describe('GET /api/v1/projects/:id', () => {
+      it('should return a 200 and a specified project by id', async () => {
+        const expectedProject = await database('projects').first();
+        const { id } = expectedProject;
+        const res = await request(app).get(`/api/v1/projects/${id}`);
+        const project = res.body[0];
+        expect(res.status).toBe(200);
+        expect(project.name).toBe(expectedProject.name);
+      });
+    });
   });
 });
