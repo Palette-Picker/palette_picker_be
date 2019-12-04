@@ -13,3 +13,5 @@ app.locals.title = 'Palette Picker';
 app.get('/', (req, res) => {
   res.send('Welcome to Palette Picker!');
 });
+
+export default app;
