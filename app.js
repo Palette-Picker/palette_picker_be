@@ -45,4 +45,17 @@ app.get('/api/v1/projects/:id', async (req, res) => {
   };
 });
 
+app.get('/api/v1/palettes/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const palette = await database('palettes').where('id', id).select();
+    if (palette.length) {
+      return res.status(200).json(palette);
+    }
+    res.status(404).json({ error: 'No palette with that id exists' });
+  } catch (error) {
+    res.status(500).json({ error });
+  };
+});
+
 export default app;
