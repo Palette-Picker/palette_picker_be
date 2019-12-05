@@ -70,7 +70,7 @@ app.post('/api/v1/projects', async (req, res) => {
   for (let requiredParam of ['name']) {
     if (!newProject[requiredParam]) {
       return res.status(422).send({
-        error: `Required paramete of ${requiredParam} is missing from request.`
+        error: `Required parameter of "${requiredParam}" is missing from request.`
       });
     };
   };
@@ -82,6 +82,36 @@ app.post('/api/v1/projects', async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ error });
+  };
+});
+
+app.post('/api/v1/palettes', async (req, res) => {
+  const newPalette = req.body;
+  for (let requiredParams of ['name', 'color1', 'color2', 'color3', 'color4', 'color5',
+  'project_id']) {
+    if (!newPalette[requiredParams]) {
+      return res.status(422).send({
+        error: `Required parameter of "${requiredParams}" is missing from request.`
+      });
+    };
+  };
+  try {
+    const validPalette = await database('palettes').insert(newPalette, 'id');
+    const { name, color1, color2, color3, color4, color5, project_id } = newPalette;
+    res.status(201).json({
+      id: validPalette[0],
+      name,
+      color1,
+      color2,
+      color3,
+      color4,
+      color5,
+      project_id
+    });
+  } catch (error) {
+    res.status(500).json({
+      error
+    });
   };
 });
 
