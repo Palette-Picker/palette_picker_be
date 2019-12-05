@@ -87,13 +87,17 @@ app.post('/api/v1/projects', async (req, res) => {
 
 app.post('/api/v1/palettes', async (req, res) => {
   const newPalette = req.body;
+  const palettes = await database('palettes').where('project_id', newPalette.project_id).select();
+  const paletteNameCheck = palettes.filter(palette => palette.name.toUpperCase() === newPalette.name.toUpperCase());
   for (let requiredParams of ['name', 'color1', 'color2', 'color3', 'color4', 'color5',
   'project_id']) {
     if (!newPalette[requiredParams]) {
       return res.status(422).send({
         error: `Required parameter of "${requiredParams}" is missing from request.`
       });
-    };
+    } else if (paletteNameCheck.length) {
+      return res.status(422).send({ error: 'Palette with that name already exists for that project_id' });
+    }
   };
   try {
     const validPalette = await database('palettes').insert(newPalette, 'id');
@@ -109,8 +113,8 @@ app.post('/api/v1/palettes', async (req, res) => {
       project_id
     });
   } catch (error) {
-    res.status(500).json({
-      error
+    res.status(404).send({
+      error: 'No project with that project id exists'
     });
   };
 });

@@ -111,11 +111,42 @@ describe('Server', () => {
       expect(res.body.name).toBe(newPalette.name);
     });
 
-    it('should return a 422 and appropriate error message', async () => {
+    it('should return a 422 and appropriate error message if parameters are missing', async () => {
       const invalidPalette = { color1: 'blue', color2: 'green', color3: 'black', project_id: 88 };
       const res = await request(app).post('/api/v1/palettes').send(invalidPalette);
       expect(res.status).toBe(422);
       expect(res.body.error).toBe('Required parameter of "name" is missing from request.');
+    });
+
+    it('should return a 422 and appropriate error message if using duplicate palette name', async () => {
+      const project = await database('projects').first();
+      const invalidPalette = {
+        name: 'Pastels',
+        color1: 'black',
+        color2: 'blue',
+        color3: 'green',
+        color4: 'orange',
+        color5: 'purple',
+        project_id: project.id
+      };
+      const res = await request(app).post('/api/v1/palettes').send(invalidPalette);
+      expect(res.status).toBe(422);
+      expect(res.body.error).toBe('Palette with that name already exists for that project_id');
+    });
+
+    it('should return a 404 and appropriate error message if using invalid project id', async () => {
+      const invalidPalette = {
+        name: 'Pastels',
+        color1: 'black',
+        color2: 'blue',
+        color3: 'green',
+        color4: 'orange',
+        color5: 'purple',
+        project_id: 1000000
+      };
+      const res = await request(app).post('/api/v1/palettes').send(invalidPalette);
+      expect(res.status).toBe(404);
+      expect(res.body.error).toBe('No project with that project id exists');
     });
   });
 });
