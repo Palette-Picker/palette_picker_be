@@ -149,4 +149,35 @@ describe('Server', () => {
       expect(res.body.error).toBe('No project with that project id exists');
     });
   });
+
+  describe('PATCH /api/v1/projects/:id', () => {
+    it('should return 200 and the updated project', async () => {
+      const nameChange = { name: "Chris' New Project" };
+      const project = await database('projects').first();
+      const expectedResponse = { id: project.id, name: nameChange.name }
+      const res = await request(app).patch(`/api/v1/projects/${project.id}`).send(nameChange);
+      expect(res.status).toBe(200);
+      expect(res.body).toEqual(expectedResponse);
+    });
+  
+    it('should return a 404 if the id is incorrect', async () => {
+      const res = await request(app).patch('/api/v1/projects/1000000').send();
+      expect(res.status).toBe(404);
+      expect(res.body.error).toBe('No project with that id exists');
+    });
+
+    it('should return a 422 if the name is missing', async () => {
+      const project = await database('projects').first();
+      const res = await request(app).patch(`/api/v1/projects/${project.id}`);
+      expect(res.status).toBe(422);
+      expect(res.body.error).toBe('Required parameter of "name" is missing from request.');
+    });
+
+    it('should return a 422 if the name is already in use', async () => {
+      const project = await database('projects').first();
+      const res = await request(app).patch(`/api/v1/projects/${project.id}`).send({name: "Amy's Colors"});
+      expect(res.status).toBe(422);
+      expect(res.body.error).toBe('Project with that name already exists');
+    });
+  });
 });
