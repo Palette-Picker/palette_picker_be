@@ -119,4 +119,36 @@ app.post('/api/v1/palettes', async (req, res) => {
   };
 });
 
+app.patch('/api/v1/projects/:id', async (req, res) => {
+  let { id } = req.params;
+  id = parseInt(id);
+  let projects = await database('projects').select();
+  let projectToBeUpdated = await database('projects').where('id', id).select();
+  const projectUpdate = req.body;
+  let nameCheck = projects.filter(project => project.name !== projectUpdate.name);
+  for (let requiredParam of ['name']) {
+    if (!projectToBeUpdated.length) {
+      return res.status(404).send({
+        error: 'No project with that id exists'
+      });
+    } else if (!projectUpdate[requiredParam]) {
+      return res.status(422).send({
+        error: `Required parameter of "${requiredParam}" is missing from request.`
+      });
+    } else if (nameCheck.length < projects.length) {
+      return res.status(422).send({
+        error: 'Project with that name already exists'
+      });
+    };
+  };
+  try {
+    await database('projects').where('id', id).update(projectUpdate);
+    const updatedProject = await database('projects').where('id', id).select();
+    const { name } = updatedProject[0];
+    res.status(200).json({ id, name });
+  } catch (error) {
+    res.status(500).json({ error });
+  };
+})
+
 export default app;
