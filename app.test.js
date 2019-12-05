@@ -78,4 +78,13 @@ describe('Server', () => {
       expect(res.body.error).toBe(expectedMsg);
     });
   });
+
+  describe('POST /api/v1/projects', () => {
+    it('should return a 201 and add a new project to the projects table', async () => {
+      const newProject = { name: 'Test Project' };
+      const res = await request(app).post('/api/v1/projects').send(newProject);
+      expect(res.status).toBe(201);
+      expect(res.body.name).toBe(newProject.name);
+    });
+  });
 });
