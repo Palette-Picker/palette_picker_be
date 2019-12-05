@@ -21,11 +21,9 @@ app.get('/api/v1/projects', async (req, res) => {
     const projsWithPalettes = projects.reduce((acc, project) => {
       const { id, name } = project;
       const projPalette = palettes.filter(palette => palette.project_id === project.id)
-      console.log(projPalette);
       acc.push({ id, name, palettes: projPalette });
       return acc;
     }, []);
-    console.log(projsWithPalettes);
     res.status(200).json(projsWithPalettes);
   } catch (error) {
     res.status(404).json({ error: 'No projects found' });
@@ -64,6 +62,60 @@ app.get('/api/v1/palettes/:id', async (req, res) => {
     res.status(404).json({ error: 'No palette with that id exists' });
   } catch (error) {
     res.status(500).json({ error });
+  };
+});
+
+app.post('/api/v1/projects', async (req, res) => {
+  const newProject = req.body;
+  for (let requiredParam of ['name']) {
+    if (!newProject[requiredParam]) {
+      return res.status(422).send({
+        error: `Required parameter of "${requiredParam}" is missing from request.`
+      });
+    };
+  };
+  try {
+    const validProject = await database('projects').insert(newProject, 'id');
+    res.status(201).json({
+      id: validProject[0],
+      name: newProject.name
+    });
+  } catch (error) {
+    res.status(500).json({ error });
+  };
+});
+
+app.post('/api/v1/palettes', async (req, res) => {
+  const newPalette = req.body;
+  const palettes = await database('palettes').where('project_id', newPalette.project_id).select();
+  const paletteNameCheck = palettes.filter(palette => palette.name.toUpperCase() === newPalette.name.toUpperCase());
+  for (let requiredParams of ['name', 'color1', 'color2', 'color3', 'color4', 'color5',
+  'project_id']) {
+    if (!newPalette[requiredParams]) {
+      return res.status(422).send({
+        error: `Required parameter of "${requiredParams}" is missing from request.`
+      });
+    } else if (paletteNameCheck.length) {
+      return res.status(422).send({ error: 'Palette with that name already exists for that project_id' });
+    }
+  };
+  try {
+    const validPalette = await database('palettes').insert(newPalette, 'id');
+    const { name, color1, color2, color3, color4, color5, project_id } = newPalette;
+    res.status(201).json({
+      id: validPalette[0],
+      name,
+      color1,
+      color2,
+      color3,
+      color4,
+      color5,
+      project_id
+    });
+  } catch (error) {
+    res.status(404).send({
+      error: 'No project with that project id exists'
+    });
   };
 });
 
