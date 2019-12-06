@@ -24,10 +24,10 @@
     "pg": "^7.14.0",
     "regenerator-runtime": "^0.13.3",
     "@babel/node": "^7.7.4",
-    "supertest": "^4.0.2"
+    "@babel/core": "^7.7.4",
+    "supertest": "^4.0.2",
+    "@babel/preset-env": "^7.7.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.7.4",
-    "@babel/preset-env": "^7.7.4"
   }
 }
