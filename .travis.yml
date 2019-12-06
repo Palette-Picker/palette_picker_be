@@ -10,5 +10,7 @@ deploy:
   provider: heroku
   api_key: 
     secure: 2a599a77-bacc-44c9-bcaa-b66303620674
+  app: palette-picker-1906-be
+  skip_cleanup: true
 notifications:
   email: false
