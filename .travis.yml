@@ -6,5 +6,9 @@ services:
 before_script:
 - psql -c 'CREATE DATABASE projects_test;' -U postgres 
 - knex migrate:latest --env=test
+deploy:
+  provider: heroku
+  api_key: 
+    secure: 2a599a77-bacc-44c9-bcaa-b66303620674
 notifications:
   email: false
