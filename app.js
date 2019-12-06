@@ -149,6 +149,16 @@ app.patch('/api/v1/projects/:id', async (req, res) => {
   } catch (error) {
     res.status(500).json({ error });
   };
-})
+});
+
+app.patch('/api/v1/palettes/:id', async (req, res) => {
+  const { id } = req.body;
+  let paletteToBeUpdated = await database('palettes').where('id', id).select();
+  if (!id || !paletteToBeUpdated) {
+    res.status(404).send({
+      error: 'No palette with that id exists'
+    });
+  }
+});
 
 export default app;
