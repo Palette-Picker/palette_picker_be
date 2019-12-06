@@ -12,5 +12,6 @@ deploy:
     secure: 2a599a77-bacc-44c9-bcaa-b66303620674
   app: palette-picker-1906-be
   skip_cleanup: true
+  run: heroku 'knex seed:run'
 notifications:
   email: false
