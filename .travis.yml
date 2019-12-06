@@ -4,6 +4,7 @@ node_js:
 services:
 - postgresql
 before_script:
-- psql -c 'CREATE DATABASE projects_test;' -U postgres knex migrate:latest
+- psql -c 'CREATE DATABASE projects_test;' -U postgres 
+- knex migrate:latest
 notifications:
   email: false
