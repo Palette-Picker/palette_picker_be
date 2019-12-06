@@ -180,4 +180,29 @@ describe('Server', () => {
       expect(res.body.error).toBe('Project with that name already exists');
     });
   });
+
+  // describe('PATCH /api/v1/palettes/:id', () => {
+  //   it('should return 200 and the updated palette', async () => {
+  //     const project = await database('projects').first();
+  //     const palette = await database('palettes').first();
+  //     const { id, color1, color2, color3, color4, color5 } = palette;
+  //     const changes = {
+  //       name: 'New Palette Name',
+  //       project_id: (project.id + 1)
+  //     };
+  //     const expectedResponse = {
+  //       id,
+  //       name: changes.name,
+  //       color1,
+  //       color2,
+  //       color3,
+  //       color4,
+  //       color5,
+  //       project_id: changes.project_id
+  //     };
+  //     const res = await request(app).post(`/api/v1/palettes/${id}`);
+  //     expect(res.status).toBe(200);
+  //     expect(res.body).toEqual(expectedResponse);
+  //   });
+  // });
 });
