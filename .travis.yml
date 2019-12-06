@@ -5,6 +5,6 @@ services:
 - postgresql
 before_script:
 - psql -c 'CREATE DATABASE projects_test;' -U postgres 
-- knex migrate:latest
+- knex migrate:latest --env=test
 notifications:
   email: false
