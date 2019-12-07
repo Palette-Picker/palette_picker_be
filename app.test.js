@@ -181,28 +181,45 @@ describe('Server', () => {
     });
   });
 
-  // describe('PATCH /api/v1/palettes/:id', () => {
-  //   it('should return 200 and the updated palette', async () => {
-  //     const project = await database('projects').first();
-  //     const palette = await database('palettes').first();
-  //     const { id, color1, color2, color3, color4, color5 } = palette;
-  //     const changes = {
-  //       name: 'New Palette Name',
-  //       project_id: (project.id + 1)
-  //     };
-  //     const expectedResponse = {
-  //       id,
-  //       name: changes.name,
-  //       color1,
-  //       color2,
-  //       color3,
-  //       color4,
-  //       color5,
-  //       project_id: changes.project_id
-  //     };
-  //     const res = await request(app).post(`/api/v1/palettes/${id}`);
-  //     expect(res.status).toBe(200);
-  //     expect(res.body).toEqual(expectedResponse);
-  //   });
-  // });
+  describe('PATCH /api/v1/palettes/:id', () => {
+    it('should return 200 and the updated palette', async () => {
+      const project = await database('projects').first();
+      const palette = await database('palettes').first();
+      const { id, color1, color2, color3, color4, color5 } = palette;
+      const changes = {
+        name: 'New Palette Name',
+        color2: '#000000',
+        project_id: (project.id + 1)
+      };
+      const expectedResponse = {
+        id,
+        name: changes.name,
+        color1,
+        color2: changes.color2,
+        color3,
+        color4,
+        color5,
+        project_id: changes.project_id
+      };
+      const res = await request(app).patch(`/api/v1/palettes/${id}`).send(changes);
+      expect(res.status).toBe(200);
+      expect(res.body).toEqual(expectedResponse);
+    });
+    it('should send a 404 if the id does not exist', async () => {
+      const invalidId = -1;
+      const changes = { name: 'Doesn\'t matter' }
+      const res = await request(app).patch(`/api/v1/palettes/${invalidId}`).send(changes);
+      expect(res.status).toBe(404);
+      expect(res.body.error).toBe('No palette with that id exists');
+    });
+    
+    it('should return a 422 if trying to duplicate a palette name within a project', async () => {
+      const palette1 = await database('palettes').first();
+      const palettes = await database('palettes').select();
+      const palette2 = palettes[1];
+      const res = await request(app).patch(`/api/v1/palettes/${palette1.id}`).send({name: palette2.name});
+      expect(res.status).toBe(422);
+      expect(res.body.error).toBe('Palette with that name already exists under that project id');
+    });
+  });
 });

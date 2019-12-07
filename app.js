@@ -152,13 +152,30 @@ app.patch('/api/v1/projects/:id', async (req, res) => {
 });
 
 app.patch('/api/v1/palettes/:id', async (req, res) => {
-  const { id } = req.body;
+  let { id } = req.params;
+  id = parseInt(id);
+  const paletteUpdate = req.body;
+  let palettes = await database('palettes').select();
   let paletteToBeUpdated = await database('palettes').where('id', id).select();
-  if (!id || !paletteToBeUpdated) {
-    res.status(404).send({
+  let nameCheck = paletteUpdate.name ? palettes.filter(palette => palette.name === paletteUpdate.name) : null;
+  let nameCheckInProject = nameCheck ? nameCheck.filter(palette => palette.project_id === paletteToBeUpdated[0].project_id) : [];
+  if (!id || !paletteToBeUpdated[0]) {
+    return res.status(404).send({
       error: 'No palette with that id exists'
     });
-  }
+  } else if (nameCheckInProject.length) {
+    return res.status(422).send({
+      error: 'Palette with that name already exists under that project id'
+    });
+  };
+  try {
+    await database('palettes').where('id', id).update(paletteUpdate);
+    const updatedPalette = await database('palettes').where('id', id).select();
+    const { name, color1, color2, color3, color4, color5, project_id } = updatedPalette[0];
+    res.status(200).json({ id, name, color1, color2, color3, color4, color5, project_id });
+  } catch (error) {
+    res.status(500).json({ error });
+  };
 });
 
 export default app;
