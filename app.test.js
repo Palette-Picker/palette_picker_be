@@ -243,4 +243,27 @@ describe('Server', () => {
       expect(res.body.error).toBe('No project with id: -1 exists. It has either already been deleted or the id sent with request is incorrect.');
     });
   });
+
+  describe('DELETE /api/v1/palettes/:id', () => {
+    it('should return 200 and the id of the deleted resource', async () => {
+      const palette = await database('palettes').first();
+      const res = await request(app).delete(`/api/v1/palettes/${palette.id}`);
+      const palettesCheck = await database('palettes').where('id', palette.id).select();
+      expect(res.status).toBe(200);
+      expect(res.body).toEqual({
+        id: palette.id
+      });
+      expect(palettesCheck.length).toBe(0);
+    });
+
+    it('should return 404 if palette id is not found or missing', async () => {
+      const invalidId = -1
+      const res = await request(app).delete(`/api/v1/palettes/${invalidId}`);
+      expect(res.status).toBe(404);
+      expect(res.body.error).toBe('No palette with id: -1 exists. It has either already been deleted or the id sent with request is incorrect.');
+      const res2 = await request(app).delete(`/api/v1/palettes/`);
+      expect(res.status).toBe(404);
+      expect(res.body.error).toBe('No palette with id: -1 exists. It has either already been deleted or the id sent with request is incorrect.');
+    });
+  });
 });

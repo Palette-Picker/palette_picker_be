@@ -196,4 +196,27 @@ app.delete('/api/v1/projects/:id', async (req, res) => {
   }
 });
 
+app.delete('/api/v1/palettes/:id', async (req, res) => {
+  let {
+    id
+  } = req.params;
+  let foundPalette = await database('palettes').where('id', id).select();
+  id = parseInt(id);
+  if (!id || !foundPalette.length) {
+    return res.status(404).send({
+      error: `No palette with id: ${id} exists. It has either already been deleted or the id sent with request is incorrect.`
+    });
+  }
+  try {
+    await database('palettes').where('id', id).del();
+    res.status(200).send({
+      id: id
+    });
+  } catch (error) {
+    res.status(500).json({
+      error
+    });
+  }
+});
+
 export default app;
