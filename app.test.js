@@ -222,4 +222,25 @@ describe('Server', () => {
       expect(res.body.error).toBe('Palette with that name already exists under that project id');
     });
   });
+
+  describe('DELETE /api/v1/projects/:id', () => {
+    it('should return 200 and the id of the deleted resource', async () => {
+      const project = await database('projects').first();
+      const res = await request(app).delete(`/api/v1/projects/${project.id}`);
+      const palettesInProject = await database('palettes').where('project_id', project.id).select();
+      expect(res.status).toBe(200);
+      expect(res.body).toEqual({ id: project.id });
+      expect(palettesInProject.length).toBe(0);
+    });
+
+    it('should return 404 if project id is not found or missing', async () => {
+      const invalidId = -1
+      const res = await request(app).delete(`/api/v1/projects/${invalidId}`);
+      expect(res.status).toBe(404);
+      expect(res.body.error).toBe('No project with id: -1 exists. It has either already been deleted or the id sent with request is incorrect.');
+      const res2 = await request(app).delete(`/api/v1/projects/`);
+      expect(res.status).toBe(404);
+      expect(res.body.error).toBe('No project with id: -1 exists. It has either already been deleted or the id sent with request is incorrect.');
+    });
+  });
 });
