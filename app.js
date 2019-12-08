@@ -26,16 +26,34 @@ app.get('/api/v1/projects', async (req, res) => {
     }, []);
     res.status(200).json(projsWithPalettes);
   } catch (error) {
-    res.status(404).json({ error: 'No projects found' });
+    res.status(500).json({ error });
   };
 });
 
 app.get('/api/v1/palettes', async (req, res) => {
+  const { color } = req.query;
+  if (color) {
+    try {
+      let queriedColor = await database('palettes').where('color1', `#${color}`)
+        .orWhere('color2', `#${color}`)
+        .orWhere('color3', `#${color}`)
+        .orWhere('color4', `#${color}`)
+        .orWhere('color5', `#${color}`)
+        .select();
+      queriedColor = queriedColor.map(palette => {
+        const { id, name, color1, color2, color3, color4, color5, project_id } = palette;
+        return { id, name, color1, color2, color3, color4, color5, project_id };
+      })
+      return res.status(200).json(queriedColor)
+    } catch (error) {
+      res.status(500).json({ error })
+    } 
+  }
   try {
     const palettes = await database('palettes').select();
     res.status(200).json(palettes);
   } catch (error) {
-    res.status(404).json({ error: 'No palettes found' });
+    res.status(500).json({ error });
   };
 });
 

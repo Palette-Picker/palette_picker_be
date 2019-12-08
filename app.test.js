@@ -39,6 +39,23 @@ describe('Server', () => {
       expect(palettes[2].name).toEqual(expectedPalettes[2].name);
       expect(palettes[3].name).toEqual(expectedPalettes[3].name);
     });
+
+    it('should return 200 and the every palette that includes the queried color', async () => {
+      const expectedResponse = await database('palettes').where('color3', '#f694c1').select();
+      const {
+        id,
+        name,
+        color1,
+        color2,
+        color3,
+        color4,
+        color5,
+        project_id
+      } = expectedResponse[0];
+      const res = await request(app).get(`/api/v1/palettes?color=f694c1`);
+      expect(res.status).toBe(200);
+      expect(res.body).toEqual([{id, name, color1, color2, color3, color4, color5, project_id}]);
+    });
   });
 
   describe('GET /api/v1/projects/:id', () => {
