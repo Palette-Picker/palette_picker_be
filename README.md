@@ -16,14 +16,17 @@ I created the seed dataset for Breweries, giving each of them an array of releva
 
 | Purpose | URL | Verb | Request Body | Sample Success Response |
 |----|----|----|----|----|
-| Get all projects | `/api/v1/projects` | GET | none | Array of Projects `[{"id": 1, "name": "Amy's Colors", "palettes": [Array of Palettes]}, ...]`|
-| Get all palettes | `/api/v1/palettes` | GET | none | `[{"id":1, "name":"Purples and greens", "color1":"#82d173", "color2":"#abfaa9", "color3":"#95a3b3", "color4":"#4c2c69", "color5":"#42253b", "project_id":1, "created_at":"2019-12-04T01:38:26.059Z", "updated_at":"2019-12-04T01:38:26.059Z"}, ...]` |
-| Search for Palettes that contain a color | `/api/v1/palettes?color=f694c1` | GET | none | `[{"id":2, "name":"Pastels", "color1":"#d3f8e2", "color2":"#e4c1f9", "color3":"#f694c1", "color4":"#ede7b1", "color5":"#a9def9", "project_id":1}]` |
-| Get all beers for a given brewery | `/api/v1/beers/:brewery_id` `:brewery_id` should be replaced with integer `id` of selected brewery | GET | none | `{[array of beers]}` |
-| Add a brewery | `/api/v1/breweries` | POST | Requires: `name(string), year_est(integer), num_locations(integer)` | Status Code 201 & `{ id: added_brewery_id }` |
-| Add a beer | `/api/v1/beers` | POST | Requires: `beer(string), style(string), abv(integer), ibu(integer), brewery_id(integer)` | 201 Status Code & `{ id: added_beer_id }` |
-| Delete a beer | `/api/v1/beers/:id` `:id` should be replaced with integer `id` of selected beer | DELETE | none | 202 Status Code & `{ message: 'Successfully deleted the beer.'}` |
-| Delete a brewery and all of its beers | `/api/v1/breweries/:id` `:id` should be replaced with integer `id` of selected brewery | DELETE | none | 202 Status Code & `{ message: 'Successfully deleted brewery and its beers.'}` |
+| Get all projects | `/api/v1/projects` | GET | none | Array of projects: `[{"id": 1, "name": "Colors", "palettes": [Array of Palettes]}]`|
+| Get all palettes | `/api/v1/palettes` | GET | none | Array of palettes: `[{"id":1, "name":"Purples and greens", "color1":"#82d173", "color2":"#abfaa9", "color3":"#95a3b3", "color4":"#4c2c69", "color5":"#42253b", "project_id":1, "created_at":"2019-12-04T01:38:26.059Z", "updated_at":"2019-12-04T01:38:26.059Z"}, ...]` |
+| Search for palettes that contain a color | `/api/v1/palettes?color=f694c1` | GET | none | Array of palettes: `[{"id":2, "name":"Pastels", "color1":"#d3f8e2", "color2":"#e4c1f9", "color3":"#f694c1", "color4":"#ede7b1", "color5":"#a9def9", "project_id":1}]` |
+| Get a specific project by id | `/api/v1/projects/:id` `:id` should be replaced with integer `id` of selected project | GET | none | `{ "id": 21, "name": "Colors", "created_at": "2019-12-10T19:42:34.142Z", "updated_at": "2019-12-10T19:42:34.142Z"}` |
+| Get a specific palette by id | `/api/v1/projects/:id` `:id` should be replaced with integer `id` of selected palette | GET | none | `{"id": 36, "name": "Greens", "color1": "#5c6f68", "color2": "#8aa39b", "color3": "#95d9c3", "color4": "#a4f9c8", "color5": "#a7fff6", "project_id": 22, "created_at": "2019-12-10T19:42:34.260Z", "updated_at": "2019-12-10T19:42:34.260Z"}` |
+| Add a project | `/api/v1/projects` | POST | Requires: `name(string)` Note: name must be unique | Status Code 201 & `{ "id": 23, "name":"New Project"}` |
+| Add a palette | `/api/v1/palette` | POST | Requires: `name(string), color1(string), color2(string), color3(string), color4(string), color5(string), project_id(integer)` Note: the string for each color needs to be in a valid hex code format `#fff123` and the name must be unique | 201 Status Code & `{"id": 37, "name": "New Palette", "color1": "#ffffff", "color2": "#000000", "color3": "#31487a", "color4": "#317a36", "color5": "#7a3170", "project_id": 22}` |
+
+| Edit a project | `/api/v1/projects/:id` `:id` should be replaced with integer `id` of selected project | PATCH | Requires: `name(string)` Note: name must be unique | Status Code 200 & `{ "id": 23, "name":"Edited Project"}` |
+| Edit a palette | `/api/v1/palettes/:id` `:id` should be replaced with integer `id` of selected palette | PATCH | One or all of the following to be changed/updated: `name(string), color1(string), color2(string), color3(string), color4(string), color5(string), project_id(integer)` Note: the string for each color needs to be in a valid hex code format `#fff123` and the name must be unique| Status Code 200 & `{"id": 33, "name": "Edited Palette", "color1": "#82d173", "color2": "#abfaa9", "color3": "#95a3b3", "color4": "#4c2c69", "color5": "#42253b", "project_id": 21}`|
+| Delete a palette | `/api/v1/palettes/:id` `:id` should be replaced with integer `id` of selected palette | DELETE | none | 200 Status Code & `{"id": 37}` |
+| Delete a project and all of its palettes | `/api/v1/projects/:id` `:id` should be replaced with integer `id` of selected project | DELETE | none | 200 Status Code & `{"id": 23}` |
 
 
-## Cheers!
