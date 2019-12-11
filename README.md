@@ -4,13 +4,25 @@ Built by:
 [Chris Basham](https://github.com/chrisdbasham317)
 [Amy Rippeto](https://github.com/aripp2) 
 
-As a student in the Front-End Engineering Program at Turing school of software and design, this was my first project working in the back-end. This was an opportunity to become familiar with building a database with **Express**, **Knex** and **PostgreSQL** and a well documented **RESTfulAPI**. The focus was on working with a one-to-many relational database schema design as well as using appropriate status codes and error handling.
+As students in the Front-End Engineering Program at Turing school of Software and Design, we were tasked with creating a RESTful API and database to use with a frontend application. Palette Picker was inspired by the well known [Coolors](https://coolors.co/393d3f-fdfdff-c6c5b9-62929e-546a7b) site. 
 
-I created the seed dataset for Breweries, giving each of them an array of relevant beers. This allowed me to implement two seperate tables, related by the brewery id.
+### [Front End Repo](https://github.com/Palette-Picker/palette_picker_fe)
+### [Live Application](https://palette-picker-1906-fe.herokuapp.com)
 
-### [Deployed on Heroku](https://byob-brews.herokuapp.com/)
+### Tech Stack/Tools
+- Node.js
+- Express.js
+- Knex.js
+- PostreSQL
+- TravisCI
+- Jest
+- GitHub Projects
 
-### [Sprint Project Board](https://github.com/aripp2/BYOB/projects/1)
+### [Deployed on Heroku](https://palette-picker-1906-be.herokuapp.com)
+
+### [Project Board](https://github.com/orgs/Palette-Picker/projects/1)
+
+### Schema
 
 ### Endpoints
 
