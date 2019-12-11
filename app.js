@@ -175,7 +175,8 @@ app.patch('/api/v1/palettes/:id', async (req, res) => {
   const paletteUpdate = req.body;
   let palettes = await database('palettes').select();
   let paletteToBeUpdated = await database('palettes').where('id', id).select();
-  let nameCheck = paletteUpdate.name ? palettes.filter(palette => palette.name === paletteUpdate.name) : null;
+  let nameCheck = paletteUpdate.name ? palettes.filter(palette => palette.name === paletteUpdate.name && palette.id !== paletteUpdate.id) : null;
+  // let checkIfSamePaletteId = nameCheck
   let nameCheckInProject = nameCheck ? nameCheck.filter(palette => palette.project_id === paletteToBeUpdated[0].project_id) : [];
   if (!id || !paletteToBeUpdated[0]) {
     return res.status(404).send({
