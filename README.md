@@ -26,6 +26,24 @@ As students in the Front-End Engineering Program at Turing school of Software an
 
 ### [Schema](https://drive.google.com/file/d/1iK_xxviYD17hg0083pTU-cP2GBWR6ZIH/view?usp=sharing)
 
+### Setup
+1. Clone down this repo & `cd` in to the directory `palette_picker_be`
+2. Install dependencies `npm install`
+3. In PostgreSQL create a database
+```
+CREATE DATABASE projects;
+\c projects
+```
+4. Migrate/Seed Data
+```
+knex migrate:latest
+knex seed:run
+knex migrate:latest --env test
+knex seed:run --env test
+```
+5. Start the server `npm start`
+6. When server is running go to [http://localhost:3000](http://localhost:3000) to use the enpoints below.
+
 ### Endpoints
 
 | Purpose | URL | Verb | Request Body | Sample Success Response |
