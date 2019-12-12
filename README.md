@@ -4,7 +4,7 @@ Built by:
 [Chris Basham](https://github.com/chrisdbasham317)
 [Amy Rippeto](https://github.com/aripp2) 
 
-As students in the Front-End Engineering Program at Turing school of Software and Design, we were tasked with creating a RESTful API and database to use with a frontend application. Palette Picker was inspired by the well known [Coolors](https://coolors.co/393d3f-fdfdff-c6c5b9-62929e-546a7b) site. 
+As students in the Front-End Engineering Program at Turing school of Software and Design, we were tasked with creating a RESTful API and database to use with a frontend application. Palette Picker was inspired by the well known [Coolors](https://coolors.co/393d3f-fdfdff-c6c5b9-62929e-546a7b) site. The project was accomplished with heavy emphasis on remote work, and clear, concise, efficient communication. We set out to create an thoroughly tested, and attractive application with a pleasing UI/UX.
 
 ### [Front End Repo](https://github.com/Palette-Picker/palette_picker_fe)
 ### [Live Application](https://palette-picker-1906-fe.herokuapp.com)
@@ -13,16 +13,18 @@ As students in the Front-End Engineering Program at Turing school of Software an
 - Node.js
 - Express.js
 - Knex.js
+- React
+- Router
 - PostreSQL
 - TravisCI
-- Jest
+- Jest/Supertest
 - GitHub Projects
 
 ### [Deployed on Heroku](https://palette-picker-1906-be.herokuapp.com)
 
 ### [Project Board](https://github.com/orgs/Palette-Picker/projects/1)
 
-### Schema
+### [Schema](https://drive.google.com/file/d/1iK_xxviYD17hg0083pTU-cP2GBWR6ZIH/view?usp=sharing)
 
 ### Endpoints
 
