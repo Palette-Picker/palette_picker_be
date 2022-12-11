@@ -16,7 +16,7 @@
     "babel-core": "^6.26.3",
     "babel-jest": "^24.9.0",
     "cors": "^2.8.5",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "jest": "^24.9.0",
     "knex": "^0.20.3",
     "nightmare": "^3.0.2",
